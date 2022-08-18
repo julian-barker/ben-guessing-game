@@ -1,82 +1,115 @@
 'use strict';
 
-const answers = new Map();
-answers.set('age', 29);
-answers.set('middle_name', 'Hugh');
-answers.set('hs_grad_year', 2011);
-answers.set('favorite_novel', 'Ulysses');
-
 const greet = (name) => {
-    console.log(`Hello, ${name}`);
+  console.log(`Hello, ${name}`);
 };
 
 const age = () => {
-    let age = Number.parseInt(prompt('How old am I?'));
-    if (age == answers.get('age')) {
+  const age = Number.parseInt(prompt('How old am I?'));
+  if (age == 29) {
+    return true;
+  }
+  return false;
+};
+
+const middleName = () => {
+  // eslint-disable-next-line max-len
+  const middleName = prompt('What\'s my middle name? Choose from:\n\tHector\n\tHugh\n\tHoward\n\tHofstra').toLowerCase();
+  if (middleName == 'hugh') {
+    return true;
+  }
+  return false;
+};
+
+const hsGradYear = () => {
+  // eslint-disable-next-line max-len
+  const hsGradYear = Number.parseInt(prompt('What year did I graduate high school?'));
+  if (hsGradYear == 2011) {
+    return true;
+  }
+  return false;
+};
+
+const favoriteNovel = () => {
+  // eslint-disable-next-line max-len
+  const favoriteNovel = prompt('What\'s my favorite novel? A hint: it\'s a famous Greek hero').toLowerCase();
+  if (favoriteNovel == 'ulysses') {
+    return true;
+  }
+  return false;
+};
+
+const favoriteMovie = () => {
+  const favoriteMovie = prompt('What\'s my favorite movie?').toLowerCase();
+  if (favoriteMovie == 'ghost dog') {
+    return true;
+  };
+  return false;
+};
+
+const favoriteCity = () => {
+  // eslint-disable-next-line max-len
+  const cities = ['paris', 'berlin', 'new york city', 'los angeles', 'tokyo', 'baltimore'];
+  let guesses = 0;
+  while (guesses < 6) {
+    guesses++;
+    const favoriteCity = prompt('What\'s my favorite city?').toLowerCase();
+    for (const city of cities) {
+      if (favoriteCity == city) {
+        alert(`You got it, my favorite city is ${city}`);
         return true;
+      }
     }
-    return false;
+  }
+  return false;
 };
 
-const middle_name = () => {
-    let middle_name = prompt('What\'s my middle name? Choose from: Hector, Hugh, Howard, Hofstra').toLowerCase();
-    if (middle_name == answers.get('middle_name').toLowerCase()) {
-        return true;
-    }
-    return false;
+const getRandom = () => {
+  return Math.floor(Math.random() * 10);
 };
 
-const hs_grad_year = () => {
-    let hs_grad_year = Number.parseInt(prompt('What year did I graduate high school?'));
-    if (hs_grad_year == answers.get('hs_grad_year')) {
-        return true;
-    }
-    return false;
+const guessRandomHelper = (guess, num) => {
+  if (num > guess) {
+    alert('Try again: go higher');
+  } else if (num < guess) {
+    alert('Try again: go lower');
+  } else if (num == guess) {
+    alert('You got it!');
+    return true;
+  }
+  return false;
 };
 
-const favorite_novel = () => {
-    let favorite_novel = prompt('What\'s my favorite novel? A hint: it\'s a famous Greek hero').toLowerCase();
-    if (favorite_novel == answers.get('favorite_novel').toLowerCase()) {
-        return true;
-    }
-    return false;
+const guessNumber = (num) => {
+  // eslint-disable-next-line max-len
+  const guess = Number.parseInt(prompt('Guess the number (between 1 and 10): '));
+  if (guessRandomHelper(guess, num)) {
+    return true;
+  }
+  return false;
 };
 
-const get_random = () => {
-    return Math.floor(Math.random() * 10);
+// eslint-disable-next-line max-len
+const questions = [age, middleName, hsGradYear, favoriteNovel, favoriteMovie, favoriteCity];
+
+const guessingGame = () => {
+  greet(prompt('What\'s your name?'));
+  let correctAnswers = 0;
+  for (const question of questions) {
+    correctAnswers += question() ? 1 : 0;
+  }
+  let numGuesses = 0;
+  const rand = getRandom();
+  while (numGuesses < 4) {
+    numGuesses++;
+    const guess = guessNumber(rand);
+    if (guess) {
+      correctAnswers++;
+      break;
+    };
+  }
+  alert(`You got ${correctAnswers} questions right!`);
+  return;
 };
 
-const guess_random_helper = (guess, num) => {
-    if (num > guess) {
-        alert('Try again: go higher');
-    } else if (num < guess) {
-        alert('Try again: go lower');
-    } else if (num == guess) {
-        alert('You got it!');
-        return true;
-    }
-    return false;
-};
-
-const guess_number = (num) => {
-    let guess = Number.parseInt(prompt('Guess the number (between 1 and 10): '));
-    if (guess_random_helper(guess, num)) {
-        return true;
-    }
-    return false;
-};
-
-const questions = [age, middle_name, hs_grad_year, favorite_novel];
-
-const guessing_game = () => {
-    let name = greet(prompt('What\'s your name, friend?'));
-    let num = get_random();
-    for (const question of questions) {
-        if (question()) {
-            alert('Good job!');
-        }
-    }
-    guess_number(num);
-};
-
-guessing_game();
+guessingGame();
